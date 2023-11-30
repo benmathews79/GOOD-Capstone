@@ -49,9 +49,9 @@ def proposals2json(bboxes, gt_ious, scores, img_id, orig_shape):
     areas = bboxes[:, 2] * bboxes[:, 3] 
     anns = []
     if len(img_id) > 60:
-        img_num = int(img_id[56:-4])
+        img_num = int(img_id[56:-4].split("_")[0])
     else:
-        img_num = int(img_id[:-4])
+        img_num = int(img_id[:-4].split("_")[0])
     for i, box in enumerate(bboxes):
         ann = {
             # "segmentation": new_rle,
@@ -110,7 +110,7 @@ def single_gpu_test(
     model.eval()
     results = []
     dataset = data_loader.dataset
-    coco = COCO('dataset/coco/annotations/instances_train2017.json')
+    coco = COCO('dataset/coco/annotations/instances_train2017_3.json')
     nonvoc_cat_ids = [8, 10, 11, 13, 14, 15, 22, 23, 24, 25, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 65, 70, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 84, 85, 86, 87, 88, 89, 90]
 
     PALETTE = dataset.PALETTE
@@ -123,7 +123,7 @@ def single_gpu_test(
         else:
             ori_filename = img_metas['ori_filename']
 
-        imgid = int(ori_filename[:-4])
+        imgid = int(ori_filename[:-4].split("_")[0])
         gt_ann_ids = coco.get_ann_ids(imgid)
         gt_anns = []
         # gt_ann_cat_ids = []
@@ -431,7 +431,7 @@ def main():
 
 
     cfg.data_root = 'dataset/coco/'
-    cfg.data.train.ann_file = cfg.data_root + 'annotations/instances_train2017.json'
+    cfg.data.train.ann_file = cfg.data_root + 'annotations/instances_train2017_3.json'
     if args.modality == 'rgb':
         cfg.data.train.img_prefix = cfg.data_root  + 'train2017/'
     elif args.modality in ["depth", "normal"]:
@@ -475,10 +475,10 @@ def main():
                 os.makedirs(out_dir)
             outputs = replace_filename_by_id(outputs, dataset)
             print(f"\nwriting results to {args.out}")
-            mmcv.dump(outputs, args.out + '.pkl')
+            mmcv.dump(outputs, args.out)
 
     # Generating a json annotation file for the new annotations
-    coco_annotations = json.load(open('dataset/coco/annotations/instances_train2017.json')).copy()
+    coco_annotations = json.load(open('dataset/coco/annotations/instances_train2017_3.json')).copy()
     pseudo_annotations = np.load(args.out, allow_pickle=True) #
 
     annotations = []
