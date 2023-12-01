@@ -131,7 +131,14 @@ def display_images_with_boxes(json_path, image_dir):
                 y = int(scale_factor*y)
                 w = int(scale_factor*w)
                 h = int(scale_factor*h)
-                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+
+            x, y, w, h = nms_bboxes[0]
+            x = int(scale_factor*x)
+            y = int(scale_factor*y)
+            w = int(scale_factor*w)
+            h = int(scale_factor*h)
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
 
         output_path = os.path.join(output_dir, image_filename.replace(".","_bbox."))
