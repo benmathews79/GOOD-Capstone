@@ -1,1 +1,0 @@
-python tools/train_good.py configs/good/phase1_normal.py --modality normal

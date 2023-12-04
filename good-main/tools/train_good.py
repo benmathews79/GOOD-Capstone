@@ -217,7 +217,7 @@ def main():
 
     cfg.data_root = args.data_root
     if args.train_dataset == "coco":
-        cfg.data.train.ann_file = cfg.data_root + 'annotations/instances_train2017_3.json'
+        cfg.data.train.ann_file = cfg.data_root + 'annotations/instances_train2017.json'
         cfg.data.val.ann_file = cfg.data_root + 'annotations/instances_val2017_2.json'
         cfg.data.test.ann_file = cfg.data_root + 'annotations/instances_val2017_2.json'
         #print("args modality: ", args.modality)
@@ -227,6 +227,7 @@ def main():
             cfg.data.val.img_prefix = cfg.data_root  + 'val2017/'
             cfg.data.test.img_prefix = cfg.data_root  + 'val2017/'
         elif args.modality in ['depth', 'normal', 'saliency']:
+            cfg.data.train.ann_file = cfg.data_root + f'annotations/instances_train2017_{args.modality}.json'
             cfg.data.train.img_prefix = cfg.data_root  + f'train_{args.modality}576_omni/'
             cfg.data.val.img_prefix = cfg.data_root  + f'val_{args.modality}576_omni/'
             cfg.data.test.img_prefix = cfg.data_root  + f'val_{args.modality}576_omni/'

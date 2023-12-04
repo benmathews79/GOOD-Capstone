@@ -1,3 +1,10 @@
 python tools/train_good.py configs/good/phase1_normal.py --modality normal
 
 python tools/test_extract_proposals.py configs/good/phase1_normal.py /good/work_dirs/phase1_normal/latest.pth --eval bbox --modality normal --out /good/work_dirs/phase1_normal/bounding_box_output
+
+
+
+
+python tools/train_good.py configs/good/phase1_depth.py --modality depth
+
+python tools/test_extract_proposals.py configs/good/phase1_depth.py /good/work_dirs/phase1_depth/latest.pth --eval bbox --modality normal --out /good/work_dirs/phase1_depth/bounding_box_output.pkl

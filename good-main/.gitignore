@@ -123,5 +123,7 @@ work_dirs/
 *.py~
 *.sh~
 
-dataset
+# dataset
+dataset/coco/annotations/*
+!dataset/coco/annotations/*2017_*.json
 pretrained_models
