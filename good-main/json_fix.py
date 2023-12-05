@@ -49,13 +49,13 @@ def filter_annotation_file_data(json_path, image_dir):
     print("Writing .json file...")
 
     # Save the filtered annotation_file_data back to the JSON file
-    with open(json_path.replace(".json","_3.json"), 'w') as json_file:
+    with open(json_path.replace(".json","_new_depth.json"), 'w') as json_file:
         json.dump(annotation_file_data, json_file, indent=2)
 
 if __name__ == "__main__":
     # Specify the path to the JSON file and the image directory
-    json_file_path = '/good/dataset/coco/annotations/instances_train2017.json'
-    image_directory = '/good/dataset/coco/train_normal576_omni'
+    json_file_path = '/home/adam.hawkins.net/workspace/vt/GOOD-Capstone/good-main/dataset/coco/annotations/instances_train2017.json'
+    image_directory = '/home/adam.hawkins.net/workspace/vt/GOOD-Capstone/good-main/DataForAdam2000/Omnidata2000Depth'
 
     # Call the function to filter annotation_file_data
     filter_annotation_file_data(json_file_path, image_directory)
