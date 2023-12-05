@@ -5,7 +5,10 @@ import numpy as np
 from tqdm import tqdm
 # import imagesize
 
-scale_factor = 512/384
+modality = 'saliency'
+
+# scale_factor = 512/384
+scale_factor = 1
 
 def nms_python(bboxes,psocres,threshold=0.5):
     '''
@@ -104,7 +107,10 @@ def display_images_with_boxes(json_path, image_dir):
         
     # # Iterate through images and display with bounding boxes
     # for image_filename, bounding_boxes in annotations.items():
-        image_filename = image_files[i].replace('normal','rgb')
+        # image_filename = image_files[i].replace(f'_{modality}','').replace('.png','.jpg')
+        image_filename = image_files[i]
+        # print(f'Image file name: {image_filename}')
+        # exit()
         # Construct the path to the image
         # if "000000000036" in image_filename:
         image_path = os.path.join(image_dir, image_filename)
@@ -158,9 +164,9 @@ if __name__ == "__main__":
     # json_file_path = '/home/adam.hawkins.net/workspace/vt/GOOD-Capstone/good-main/work_dirs/phase1_normal/bounding_box_output.pkl.json'
     # image_directory = '/home/adam.hawkins.net/workspace/vt/GOOD-Capstone/good-main/dataset/coco/train_normal576_omni'
 
-    json_file_path = '/good/work_dirs/phase1_normal/bounding_box_output.pkl.json'
+    json_file_path = f'/good/work_dirs/phase1_vt_{modality}/bounding_box_output.pkl.json'
     # image_directory = '/good/dataset/coco/train_normal576_omni'
-    image_directory = '/good/dataforadam/Omnidata120Normal'
+    image_directory = f'/good/dataset/coco/train_{modality}576_omni'
 
 
     # Call the function to display images with bounding boxes

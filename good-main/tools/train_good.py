@@ -89,7 +89,7 @@ def parse_args():
         action='store_true',
         help='enable automatically scaling LR.')
     parser.add_argument('--no-cudnn',  action='store_true')
-    parser.add_argument('--modality',  default='rgb', type=str, choices=['rgb', 'depth', 'normal'])
+    parser.add_argument('--modality',  default='rgb', type=str, choices=['rgb', 'depth', 'normal', 'saliency'])
     parser.add_argument('--train_dataset', default='coco', type=str)
     parser.add_argument('--lvis_val', action='store_true', help='whether to do validation using Lvis non-COCO annotations')
     parser.add_argument('--topk', type=int, nargs='+')
@@ -227,7 +227,7 @@ def main():
             cfg.data.val.img_prefix = cfg.data_root  + 'val2017/'
             cfg.data.test.img_prefix = cfg.data_root  + 'val2017/'
         elif args.modality in ['depth', 'normal', 'saliency']:
-            cfg.data.train.ann_file = cfg.data_root + f'annotations/instances_train2017_{args.modality}.json'
+            cfg.data.train.ann_file = cfg.data_root + f'annotations/instances_train2017_new_{args.modality}.json'
             cfg.data.train.img_prefix = cfg.data_root  + f'train_{args.modality}576_omni/'
             cfg.data.val.img_prefix = cfg.data_root  + f'val_{args.modality}576_omni/'
             cfg.data.test.img_prefix = cfg.data_root  + f'val_{args.modality}576_omni/'

@@ -95,7 +95,8 @@ def single_gpu_test(
     # coco_all=False,
     filter_gt_overlap=False,
     gt_cat_class = 'voc',
-    category=None
+    category=None,
+    modality=None
     # pa_func=generate_pa_proposals,
 ):
     """
@@ -110,7 +111,7 @@ def single_gpu_test(
     model.eval()
     results = []
     dataset = data_loader.dataset
-    coco = COCO('dataset/coco/annotations/instances_train2017_3.json')
+    coco = COCO(f'dataset/coco/annotations/instances_train2017_new_{modality}.json')
     nonvoc_cat_ids = [8, 10, 11, 13, 14, 15, 22, 23, 24, 25, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 65, 70, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 84, 85, 86, 87, 88, 89, 90]
 
     PALETTE = dataset.PALETTE
@@ -335,7 +336,7 @@ def parse_args():
         '--visk',
         type=int,
         default=3,)
-    parser.add_argument('--modality',  default='rgb', type=str, choices=['rgb', 'depth', 'normal'])
+    parser.add_argument('--modality',  default='rgb', type=str, choices=['rgb', 'depth', 'normal', 'saliency'])
     parser.add_argument('--max_size', type=int, default=576)
     parser.add_argument("--filter_gt_overlap", action="store_true", help="For visualization, whether to filter detected boxes with high gt overlap")
     parser.add_argument("--category", default=None, type=str)
@@ -431,10 +432,10 @@ def main():
 
 
     cfg.data_root = 'dataset/coco/'
-    cfg.data.train.ann_file = cfg.data_root + 'annotations/instances_train2017_3.json'
+    cfg.data.train.ann_file = cfg.data_root + f'annotations/instances_train2017_new_{args.modality}.json'
     if args.modality == 'rgb':
         cfg.data.train.img_prefix = cfg.data_root  + 'train2017/'
-    elif args.modality in ["depth", "normal"]:
+    elif args.modality in ["depth", "normal", "saliency"]:
         cfg.data.train.img_prefix = cfg.data_root  + f'train_{args.modality}{args.max_size}_omni/'
 
     cfg.data.train.pipeline = cfg.data.test.pipeline
@@ -464,7 +465,7 @@ def main():
 
     # Based on test config, make predictions. 
     model = MMDataParallel(model, device_ids=cfg.gpu_ids)
-    outputs = single_gpu_test(model, data_loader, args.show, args.show_dir, args.topk, vis_k=args.visk, gt_cat_class=args.gt_cat_class, filter_gt_overlap=args.filter_gt_overlap, category=args.category)
+    outputs = single_gpu_test(model, data_loader, args.show, args.show_dir, args.topk, vis_k=args.visk, gt_cat_class=args.gt_cat_class, filter_gt_overlap=args.filter_gt_overlap, category=args.category, modality=args.modality)
 
 
     rank, _ = get_dist_info()
@@ -478,7 +479,7 @@ def main():
             mmcv.dump(outputs, args.out)
 
     # Generating a json annotation file for the new annotations
-    coco_annotations = json.load(open('dataset/coco/annotations/instances_train2017_3.json')).copy()
+    coco_annotations = json.load(open(f'dataset/coco/annotations/instances_train2017_new_{args.modality}.json')).copy()
     pseudo_annotations = np.load(args.out, allow_pickle=True) #
 
     annotations = []
