@@ -52,7 +52,7 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
+# *.log
 local_settings.py
 db.sqlite3
 
@@ -111,15 +111,15 @@ data
 .DS_Store
 
 # custom
-*.pkl
-*.pkl.json
-*.log.json
+# *.pkl
+# *.pkl.json
+# *.log.json
 docs/modelzoo_statistics.md
 mmdet/.mim
-work_dirs/
+# work_dirs/
 
 # Pytorch
-*.pth
+# *.pth
 *.py~
 *.sh~
 
